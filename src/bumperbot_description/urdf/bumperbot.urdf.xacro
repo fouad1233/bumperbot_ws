@@ -5,7 +5,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bumperbot" >
 
     <!-- Include another model-->
-    <xacro:include filename="$(find bumperbot_description)urdf/bumperbot.gazebo.xacro" />
+    <xacro:include filename="$(find bumperbot_description)/urdf/bumperbot.gazebo.xacro" />
     <link name="base_footprint" />
 
     <link name="base_link">
