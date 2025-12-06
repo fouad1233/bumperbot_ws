@@ -4,13 +4,13 @@
         <!-- if using ros2 humble-->
         <xacro:if value="$(arg is_ignition)">
             <hardware>
-                <plugin>ignition_ros2_control/IgnitionSystem</plugin>
+                <plugin>ign_ros2_control/IgnitionSystem</plugin>
             </hardware>
         </xacro:if>
         <!-- if using ros2 jazzy-->
         <xacro:unless value="$(arg is_ignition)">
             <hardware>
-                <plugin>gazebo_ros2_control/GazeboSimSystem</plugin>
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
             </hardware>
         </xacro:unless>
 
