@@ -61,7 +61,7 @@ def generate_launch_description():
         output='screen', # This make us seeing the simulation
         arguments=[
             '-topic', 'robot_description',
-            '-entity', 'bumperbot'
+            '-name', 'bumperbot'
         ],
     )
     return LaunchDescription([
