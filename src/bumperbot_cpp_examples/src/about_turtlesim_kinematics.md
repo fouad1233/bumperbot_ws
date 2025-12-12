@@ -78,3 +78,19 @@ Use the arrow keys to move `turtle1` and observe the kinematics output.
 The last matrix is tansformation matrix. Example:
 
 ![1765562680487](image/how_to_run_turtlesim_kinematics/1765562680487.png)
+
+## Velocity of mobile robot
+
+![1765563356839](image/how_to_run_turtlesim_kinematics/1765563356839.png)
+
+![1765563371119](image/how_to_run_turtlesim_kinematics/1765563371119.png)
+
+![1765563382334](image/how_to_run_turtlesim_kinematics/1765563382334.png)
+
+xdot, ydot = linear veleocity
+
+theta dot = angular velociy
+
+P dot is the velocity vector of the robot
+
+![1765563399542](image/how_to_run_turtlesim_kinematics/1765563399542.png)
