@@ -147,3 +147,29 @@ There is just Vx, Vy is zero because of the wheels and differential drive archit
 ![1765570740595](image/about_turtlesim_kinematics/1765570740595.png)
 
 ![1765570750700](image/about_turtlesim_kinematics/1765570750700.png)
+
+### Simple speed controller
+
+In this lesson, a simple velocity controller application is
+implemented for a robot using joystick input. By revisiting the
+differential kinematics equation, joystick commands are converted into
+the robot’s movements. The aim is to allow the robot’s speed and
+direction to be intuitively controlled by the user through the joystick.
+
+The lesson explains the process of publishing velocity messages from
+the joystick on a specific topic, enabling the robot to receive velocity
+ commands. For example, the goal is for the robot to receive commands
+such as moving straight at one meter per second or rotating in place at
+one radian per second. However, a challenge arises in converting these
+commands from the robot’s reference frame into individual wheel
+velocities.
+
+To address this, a new ROS 2 node will be developed. This node will
+subscribe to the joystick’s velocity topic, and when a new message is
+received, it will compute appropriate commands for each wheel using the
+differential kinematics equation. These commands will then be published
+to the respective topics that control the robot’s wheels.
+
+Overall, the lesson emphasizes the importance of understanding the
+relationship between joystick inputs and the robot’s wheel motions,
+enabling effective real-time control of the robot.
