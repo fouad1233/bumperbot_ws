@@ -20,21 +20,28 @@ SimpleTurtlesimKinematics::SimpleTurtlesimKinematics(const std::string &name ): 
 void SimpleTurtlesimKinematics::turtle1PoseCallback(const turtlesim::msg::Pose &pose)
 {
     last_turtle1_pose_ = pose;
-    RCLCPP_INFO(this->get_logger(), "Turtle1 Pose - x: %.2f, y: %.2f, theta: %.2f", 
-                pose.x, pose.y, pose.theta);
+    //RCLCPP_INFO(this->get_logger(), "Turtle1 Pose - x: %.2f, y: %.2f, theta: %.2f", 
+    //            pose.x, pose.y, pose.theta);
 }
 
 void SimpleTurtlesimKinematics::turtle2PoseCallback(const turtlesim::msg::Pose &pose)
 {
     last_turtle2_pose_ = pose;
-    RCLCPP_INFO(this->get_logger(), "Turtle2 Pose - x: %.2f, y: %.2f, theta: %.2f", 
-                pose.x, pose.y, pose.theta);
+    //RCLCPP_INFO(this->get_logger(), "Turtle2 Pose - x: %.2f, y: %.2f, theta: %.2f", 
+    //            pose.x, pose.y, pose.theta);
     float Tx, Ty, distance;
     Tx = last_turtle2_pose_.x - last_turtle1_pose_.x;
     Ty = last_turtle2_pose_.y - last_turtle1_pose_.y;
     distance = sqrt(Tx*Tx + Ty*Ty);
-    RCLCPP_INFO(this->get_logger(), "Translation vector Tx: %.2f, Ty: %.2f", Tx, Ty);
-    RCLCPP_INFO(this->get_logger(), "Distance between Turtle1 and Turtle2: %.2f", distance);
+    float theta_rad = last_turtle2_pose_.theta - last_turtle1_pose_.theta;
+    float theta_deg = 180.0 * theta_rad / 3.141592653589793;
+    RCLCPP_INFO_STREAM(this->get_logger(), 
+        "Relative Orientation (Turtle2 wrt Turtle1): " << theta_deg << " degrees\n"
+        << "Rotation Matrix: |R11    R12| :|" << std::cos(theta_rad) << "   " << -std::sin(theta_rad) << "| :|cos(theta)  -sin(theta)|\n"
+        << "                 |R21    R22| :|" << std::sin(theta_rad) << "   " << std::cos(theta_rad)  << "| :|sin(theta)   cos(theta)|\n"
+        << "Translation vector Tx: " << Tx << ", Ty: " << Ty << "\n"
+        << "Distance between Turtle1 and Turtle2: " << distance);
+
 }
 
 int main(int argc, char **argv)
