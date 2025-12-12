@@ -129,3 +129,8 @@ Ws = Wheel seperation, distance betwwen two wheel
 ![1765569263687](image/about_turtlesim_kinematics/1765569263687.png)
 
 ![1765569273560](image/about_turtlesim_kinematics/1765569273560.png)
+
+### Velocity in World frame
+
+
+There is just Vx, Vy is zero because of the wheels and differential drive architecture
