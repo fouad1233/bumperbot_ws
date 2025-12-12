@@ -68,3 +68,13 @@ Use the arrow keys to move `turtle1` and observe the kinematics output.
 
 - **Command not found**: Make sure you've sourced the workspace with `source install/setup.bash`
 - **Package not found**: Rebuild with `colcon build` and source again
+
+## Transformation matrix
+
+![1765562446423](image/how_to_run_turtlesim_kinematics/1765562446423.png)
+
+![1765562577791](image/how_to_run_turtlesim_kinematics/1765562577791.png)
+
+The last matrix is tansformation matrix. Example:
+
+![1765562680487](image/how_to_run_turtlesim_kinematics/1765562680487.png)
