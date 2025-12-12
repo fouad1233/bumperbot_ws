@@ -110,3 +110,22 @@ P dot is the velocity vector of the robot
 ![1765564971364](image/about_turtlesim_kinematics/1765564971364.png)
 
 Wr and Wl is the radious of the wheels. Theta dot R and Theta dot L is the angular velocity of the weels. Vc = V
+
+### Angular velocity
+
+To derive the angular velocity we have to substract the two equations now:
+
+Ws = Wheel seperation, distance betwwen two wheel
+
+![1765568874597](image/about_turtlesim_kinematics/1765568874597.png)
+
+![1765568940260](image/about_turtlesim_kinematics/1765568940260.png)
+
+
+![1765569243664](image/about_turtlesim_kinematics/1765569243664.png)
+
+![1765569254403](image/about_turtlesim_kinematics/1765569254403.png)
+
+![1765569263687](image/about_turtlesim_kinematics/1765569263687.png)
+
+![1765569273560](image/about_turtlesim_kinematics/1765569273560.png)
