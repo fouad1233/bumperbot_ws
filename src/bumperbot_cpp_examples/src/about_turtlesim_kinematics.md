@@ -139,3 +139,11 @@ There is just Vx, Vy is zero because of the wheels and differential drive archit
 ![1765570083537](image/about_turtlesim_kinematics/1765570083537.png)
 
 ![1765570093328](image/about_turtlesim_kinematics/1765570093328.png)
+
+### Differential forward kinematics
+
+![1765570729357](image/about_turtlesim_kinematics/1765570729357.png)
+
+![1765570740595](image/about_turtlesim_kinematics/1765570740595.png)
+
+![1765570750700](image/about_turtlesim_kinematics/1765570750700.png)
