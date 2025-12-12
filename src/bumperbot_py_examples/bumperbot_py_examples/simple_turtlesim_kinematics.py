@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from turtlesim.msg import Pose
+import math
 
 class SimpleTurtlesimKinematics(Node):
     def __init__(self):
@@ -21,11 +22,21 @@ class SimpleTurtlesimKinematics(Node):
         Tx = self.last_turtle2_pose_.x - self.last_turtle1_pose_.x
         Ty = self.last_turtle2_pose_.y - self.last_turtle1_pose_.y
         distance = (Tx**2 + Ty**2)**0.5
+        theta_rad = self.last_turtle2_pose_.theta - self.last_turtle1_pose_.theta
+        theta_deg = 180.0 * theta_rad / 3.141592653589793
         self.get_logger().info("""\n
         Translation Vector from Turtle1 to Turtle2: \n
         Tx: {:.5f}, Ty: {:.5f} \n
         Distance: {:.5f} \n
-        """.format(Tx, Ty, distance))
+        Rotation Matrix 
+        Theta radians: {:.5f},
+        theta deg: {:.5f}
+        |R11    R12| :|{:.5f}   {:.5f}| :|cos(theta)  -sin(theta)|
+        |R21    R22| :|{:.5f}   {:.5f}| :|sin(theta)   cos(theta)|
+        """.format(Tx, Ty, distance, theta_rad, theta_deg,
+                    math.cos(theta_rad), -math.sin(theta_rad),
+                    math.sin(theta_rad), math.cos(theta_rad)))
+
 
 def main(args=None):
     rclpy.init(args=args)
