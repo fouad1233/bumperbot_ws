@@ -94,3 +94,19 @@ theta dot = angular velociy
 P dot is the velocity vector of the robot
 
 ![1765563399542](image/how_to_run_turtlesim_kinematics/1765563399542.png)
+
+### Linear velocity
+
+![1765564903996](image/about_turtlesim_kinematics/1765564903996.png)
+
+![1765564916623](image/about_turtlesim_kinematics/1765564916623.png)
+
+![1765564929776](image/about_turtlesim_kinematics/1765564929776.png)
+
+![1765564942938](image/about_turtlesim_kinematics/1765564942938.png)
+
+![1765564957170](image/about_turtlesim_kinematics/1765564957170.png)
+
+![1765564971364](image/about_turtlesim_kinematics/1765564971364.png)
+
+Wr and Wl is the radious of the wheels. Theta dot R and Theta dot L is the angular velocity of the weels. Vc = V
