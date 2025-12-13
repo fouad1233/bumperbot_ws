@@ -5,6 +5,26 @@
     <!-- This argument is used to determine if we are using ros 2 humble (true) or jazzy (false)-->
     <xacro:arg name="is_ignition" default="true"/>
 
+    <!-- Define materials/colors -->
+    <material name="blue">
+        <color rgba="0.2 0.2 0.8 1.0"/>
+    </material>
+    <material name="black">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+    </material>
+    <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0"/>
+    </material>
+    <material name="grey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
+    </material>
+    <material name="red">
+        <color rgba="0.8 0.0 0.0 1.0"/>
+    </material>
+    <material name="silver">
+        <color rgba="0.75 0.75 0.75 1.0"/>
+    </material>
+
     <!-- Include another model-->
     <xacro:include filename="$(find bumperbot_description)/urdf/bumperbot.gazebo.xacro" />
 
@@ -23,7 +43,8 @@
             <origin rpy="0 0 0" xyz="0 0 0"></origin>
             <geometry>
                 <mesh filename="package://bumperbot_description/meshes/base_link.STL"  />
-           </geometry> 
+           </geometry>
+           <material name="black"/> 
         </visual>
         <!-- This parameters are required for gazebo -->
         <collision>
@@ -53,6 +74,7 @@
             <geometry>
                 <mesh filename = "package://bumperbot_description/meshes/wheel_right_link.STL"></mesh>
             </geometry>
+            <material name="blue"/>
         </visual>    
         <collision>
             <origin xyz="0 -0.015 0" rpy="1.57 0 0"></origin>
@@ -82,6 +104,7 @@
             <geometry>
                 <mesh filename = "package://bumperbot_description/meshes/wheel_left_link.STL"></mesh>
             </geometry>
+            <material name="blue"/>
         </visual>    
         <collision>
             <origin xyz="0 0.015 0" rpy="1.57 0 0"></origin>
@@ -110,6 +133,7 @@
             <geometry>
                 <mesh filename = "package://bumperbot_description/meshes/caster_front_link.STL"></mesh>
             </geometry>
+            <material name="grey"/>
         </visual>    
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"></origin>
@@ -140,6 +164,7 @@
             <geometry>
                 <mesh filename = "package://bumperbot_description/meshes/caster_rear_link.STL"></mesh>
             </geometry>
+            <material name="grey"/>
         </visual>    
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"></origin>
@@ -164,6 +189,7 @@
             <geometry>
                 <mesh filename= "package://bumperbot_description/meshes/can.STL"></mesh>
             </geometry>
+            <material name="red"/>
         </visual>
     </link>
 
