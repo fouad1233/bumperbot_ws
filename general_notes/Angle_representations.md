@@ -100,6 +100,47 @@ Where $a, b, c, d$ are real numbers, and $i, j, k$ are the fundamental quaternio
 
 ---
 
+
+## Conversion Between Euler Angles and Quaternions
+
+It is often necessary to convert between Euler angles and quaternions, depending on the application. Here are the standard formulas for both directions (assuming the intrinsic rotation order ZYX, i.e., yaw-pitch-roll):
+
+### Euler Angles (ZYX: Yaw $\psi$, Pitch $\theta$, Roll $\phi$) to Quaternion
+
+Given Euler angles $\psi$ (yaw, Z), $\theta$ (pitch, Y), $\phi$ (roll, X):
+
+$$
+\begin{align*}
+q_w &= \cos\left(\frac{\phi}{2}\right) \cos\left(\frac{\theta}{2}\right) \cos\left(\frac{\psi}{2}\right) + \sin\left(\frac{\phi}{2}\right) \sin\left(\frac{\theta}{2}\right) \sin\left(\frac{\psi}{2}\right) \\
+q_x &= \sin\left(\frac{\phi}{2}\right) \cos\left(\frac{\theta}{2}\right) \cos\left(\frac{\psi}{2}\right) - \cos\left(\frac{\phi}{2}\right) \sin\left(\frac{\theta}{2}\right) \sin\left(\frac{\psi}{2}\right) \\
+q_y &= \cos\left(\frac{\phi}{2}\right) \sin\left(\frac{\theta}{2}\right) \cos\left(\frac{\psi}{2}\right) + \sin\left(\frac{\phi}{2}\right) \cos\left(\frac{\theta}{2}\right) \sin\left(\frac{\psi}{2}\right) \\
+q_z &= \cos\left(\frac{\phi}{2}\right) \cos\left(\frac{\theta}{2}\right) \sin\left(\frac{\psi}{2}\right) - \sin\left(\frac{\phi}{2}\right) \sin\left(\frac{\theta}{2}\right) \cos\left(\frac{\psi}{2}\right)
+\end{align*}
+$$
+
+Where $q = [q_w, q_x, q_y, q_z]$ (sometimes $q = [q_x, q_y, q_z, q_w]$ depending on convention).
+
+### Quaternion to Euler Angles (ZYX)
+
+Given quaternion $q = [q_w, q_x, q_y, q_z]$:
+
+$$
+\begin{align*}
+\phi &= \arctan2\left(2(q_w q_x + q_y q_z), 1 - 2(q_x^2 + q_y^2)\right) \\
+	heta &= \arcsin\left(2(q_w q_y - q_z q_x)\right) \\
+\psi &= \arctan2\left(2(q_w q_z + q_x q_y), 1 - 2(q_y^2 + q_z^2)\right)
+\end{align*}
+$$
+
+**Note:**
+- The above assumes the ZYX (yaw-pitch-roll) convention, which is common in robotics and ROS.
+- Always check the convention/order used in your software or library.
+
+**Practical Usage:**
+- Most robotics and graphics libraries provide built-in functions for these conversions (e.g., `tf.transformations` in ROS, `scipy.spatial.transform.Rotation` in Python).
+
+---
+
 ## Practical Notes
 
 - **Euler angles** are often used for user interfaces, animation keyframes, and situations where human interpretability is important.
