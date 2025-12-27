@@ -1,8 +1,15 @@
+from urllib import response
+
+from matplotlib.transforms import Transform
 import rclpy
 from rclpy.node import Node
 from tf2_ros.static_transform_broadcaster import StaticTransformBroadcaster
-from tf2_ros import TransformBroadcaster
+from tf2_ros import TransformBroadcaster, TransformException
+from tf2_ros.buffer import Buffer
+from tf2_ros.transform_listener import TransformListener
+
 from geometry_msgs.msg import TransformStamped
+from bumperbot_msgs.srv import GetTransform
 class SimpleTfKinematics(Node):
     def __init__(self):
         super().__init__('simple_tf_kinematics')
@@ -15,6 +22,9 @@ class SimpleTfKinematics(Node):
 
         self.x_increment_ = 0.05  # Increment in x (centimeters) position per timer callback
         self.last_x_ = 0.0
+
+        self.tf_buffer_ = Buffer()
+        self.tf_listener_ = TransformListener(self.tf_buffer_, self)
 
         self.static_transform_stamped_.header.stamp = self.get_clock().now().to_msg()
         self.static_transform_stamped_.header.frame_id = "bumperbot_base"
@@ -36,6 +46,11 @@ class SimpleTfKinematics(Node):
         self.get_logger().info("Static transform from %s to %s published" % (self.static_transform_stamped_.header.frame_id, self.static_transform_stamped_.child_frame_id))
 
         self.timer_ = self.create_timer(0.1, self.timer_callback) # 10 Hz
+
+        self.get_transform_srv_ = self.create_service(GetTransform, 'get_transform', self.get_transform_callback)
+
+
+
     def timer_callback(self):
         self.dynamic_transform_stamped_.header.stamp = self.get_clock().now().to_msg()
         self.dynamic_transform_stamped_.header.frame_id = "odom"
@@ -53,7 +68,18 @@ class SimpleTfKinematics(Node):
         self.dynamic_tf_broadcaster_.sendTransform(self.dynamic_transform_stamped_)
         self.last_x_  = self.dynamic_transform_stamped_.transform.translation.x
 
-        pass
+    def get_transform_callback(self, req, res):
+        self.get_logger().info("GetTransform service called for transform from %s to %s" % (req.frame_id, req.child_frame_id))
+        requested_transform = TransformStamped()
+        try: 
+            requested_transform = self.tf_buffer_.lookup_transform(req.frame_id, req.child_frame_id, rclpy.time.Time())
+        except TransformException as ex:
+            self.get_logger().error("Could not transform %s to %s: %s" % (req.frame_id, req.child_frame_id, str(ex)))
+            res.success = False
+            return res
+        res.transform = requested_transform
+        res.success = True
+        return res
 def main(args=None):
     rclpy.init(args=args)
 
