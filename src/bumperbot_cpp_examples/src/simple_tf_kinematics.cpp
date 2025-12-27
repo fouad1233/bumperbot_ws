@@ -7,6 +7,11 @@ SimpleTfKinematics::SimpleTfKinematics(const std::string & name)
 {
     static_tf_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
     dynamic_tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
+
+    tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
+    tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
+
+
     // Define a static transform from "world" to "odom"
     static_transform_stamped_.header.stamp = get_clock()->now();
     static_transform_stamped_.header.frame_id = "bumperbot_base";
@@ -30,6 +35,12 @@ SimpleTfKinematics::SimpleTfKinematics(const std::string & name)
     timer_ = this->create_wall_timer(
         0.1s,
         std::bind(&SimpleTfKinematics::timerCallback, this));
+
+    get_transform_srv_ = this->create_service<bumperbot_msgs::srv::GetTransform>(
+        "get_transform",
+        std::bind(&SimpleTfKinematics::getTransformCallback, this,
+            std::placeholders::_1, std::placeholders::_2));
+    RCLCPP_INFO_STREAM(get_logger(), "Service 'get_transform' is ready.");
 }
 void SimpleTfKinematics::timerCallback()
 {
@@ -48,6 +59,36 @@ void SimpleTfKinematics::timerCallback()
     dynamic_transform_stamped_.transform.rotation.w = 1.0;  // No rotation
     dynamic_tf_broadcaster_->sendTransform(dynamic_transform_stamped_);
     last_x_  = dynamic_transform_stamped_.transform.translation.x;
+}
+
+bool SimpleTfKinematics::getTransformCallback(
+    const std::shared_ptr<bumperbot_msgs::srv::GetTransform::Request> req,
+    std::shared_ptr<bumperbot_msgs::srv::GetTransform::Response> res)
+{
+    RCLCPP_INFO_STREAM(get_logger(), "Received request for transform from '"
+        << req->frame_id << "' to '" << req->child_frame_id << "'.");
+    geometry_msgs::msg::TransformStamped requested_transform;
+    try {
+        requested_transform = 
+            tf_buffer_->lookupTransform(
+                req->frame_id,
+                req->child_frame_id,
+                tf2::TimePointZero);
+
+        RCLCPP_INFO_STREAM(get_logger(), "Providing transform from '"
+            << req->frame_id << "' to '" << req->child_frame_id << "'.");
+    } catch (tf2::TransformException & ex) {
+        RCLCPP_WARN_STREAM(get_logger(), "Could not transform from '"
+            << req->frame_id << "' to '" << req->child_frame_id
+            << "': " << ex.what());
+
+        res->transform = requested_transform;
+        res->success = false;
+        return true;
+        // Leave res->transform default initialized
+    }
+    res->success = true;
+    return true;
 }
 
 int main(int argc, char ** argv)
