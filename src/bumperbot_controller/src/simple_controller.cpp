@@ -9,6 +9,9 @@ SimpleController::SimpleController(const std::string& name)
                                   : Node(name)
                                   , left_wheel__prev_pos_(0.0)
                                   , right_wheel__prev_pos_(0.0)
+                                  , x_(0.0)
+                                  , y_(0.0)
+                                  , theta_(0.0)
 {
     declare_parameter("wheel_radius", 0.033);
     declare_parameter("wheel_separation", 0.17);
@@ -48,6 +51,14 @@ void SimpleController::jointCallback(const sensor_msgs::msg::JointState &msg)
     double linear = wheel_radius_ * (fi_right + fi_left) / 2.0;
     double angular = wheel_radius_ * (fi_right - fi_left) / wheel_separation_;
     RCLCPP_INFO_STREAM(get_logger(), "Linear vel: " << linear << " Angular vel: " << angular);
+
+    double d_s = wheel_radius_ * (dp_right + dp_left) / 2.0;
+    double d_theta = wheel_radius_ * (dp_right - dp_left) / wheel_separation_;
+    theta_ += d_theta;
+    x_ += d_s * cos(theta_);
+    y_ += d_s * sin(theta_);
+    RCLCPP_INFO_STREAM(get_logger(), "Robot Position -> x: " << x_ << " m, y: " << y_ << " m, theta: " << theta_ << " rad");
+    
     
 
 
