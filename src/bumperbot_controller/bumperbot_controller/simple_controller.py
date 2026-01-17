@@ -8,6 +8,7 @@ from sensor_msgs.msg import JointState
 import numpy as np
 from rclpy.time import Time
 from rclpy.constants import S_TO_NS
+import math
 
 class SimpleController(Node):
     def __init__(self):
@@ -25,6 +26,10 @@ class SimpleController(Node):
         self.left_wheel_prev_pos_ = 0.0 
         self.right_wheel_prev_pos_ = 0.0
         self.prev_time_ = self.get_clock().now()
+
+        self.x_ = 0.0
+        self.y_ = 0.0
+        self.theta_ = 0.0
 
 
         # Publisher for wheel veolocity commands
@@ -82,9 +87,15 @@ Robot speed R_s Speed Conversion Matrix M_s    Wheel Angular Velocities theta_do
 
         linear = self.wheel_raduis_ * (fi_right + fi_left) / 2
         angular = self.wheel_raduis_ * (fi_right - fi_left) / self.wheel_seperation_
-
         self.get_logger().info(f'Linear Velocity: {linear:.3f} m/s, Angular Velocity: {angular:.3f} rad/s')
 
+        d_s = self.wheel_raduis_ * (dp_right + dp_left) / 2
+        d_theta = self.wheel_raduis_ * (dp_right - dp_left) / self.wheel_seperation_
+        self.theta_ += d_theta
+        self.x_ += d_s * math.cos(self.theta_)
+        self.y_ += d_s * math.sin(self.theta_)
+        self.get_logger().info(f'Robot Position -> x: {self.x_:.3f} m, y: {self.y_:.3f} m, theta: {self.theta_:.3f} rad')
+        
 def main(args=None):
     rclpy.init(args=args)
     simple_controller = SimpleController()
